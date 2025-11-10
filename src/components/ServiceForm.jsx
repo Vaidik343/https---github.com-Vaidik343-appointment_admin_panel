@@ -7,14 +7,24 @@ import {
   Box,
   CircularProgress,
   Stack,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 
-const ServiceForm = ({ onClose }) => {
-  const { createService, loading } = useService();
+const ServiceForm = ({ onClose, serviceType = "general", doctorId = null }) => {
+  const {
+    createGeneralService,
+    createDoctorService,
+    loading
+  } = useService();
 
   const [form, setForm] = useState({
     name: "",
     cost: "",
+    category: "",
+    doctor_id: doctorId || "",
   });
 
   const handleChange = (e) => {
@@ -22,16 +32,26 @@ const ServiceForm = ({ onClose }) => {
   };
 
   const handleSubmit = async () => {
-    if (!form.name || !form.cost) {
-      toast.error("Please fill out all fields");
-      return;
-    }
-
-    const res = await createService(form);
-    if (res) {
-      toast.success("Service created successfully!");
-      setForm({ name: "", cost: "" });
-      if (onClose) onClose();
+    if (serviceType === "general") {
+      if (!form.name || !form.cost) {
+        toast.error("Please fill out name and cost");
+        return;
+      }
+      const res = await createGeneralService({ name: form.name, cost: form.cost, category: form.category });
+      if (res) {
+        setForm({ name: "", cost: "", category: "" });
+        if (onClose) onClose();
+      }
+    } else if (serviceType === "doctor") {
+      if (!form.doctor_id || !form.name || !form.cost) {
+        toast.error("Please fill out all fields");
+        return;
+      }
+      const res = await createDoctorService({ doctor_id: form.doctor_id, name: form.name, cost: form.cost });
+      if (res) {
+        setForm({ name: "", cost: "", doctor_id: doctorId || "" });
+        if (onClose) onClose();
+      }
     }
   };
 
@@ -48,6 +68,18 @@ const ServiceForm = ({ onClose }) => {
       noValidate
       autoComplete="off"
     >
+      {serviceType === "doctor" && (
+        <TextField
+          label="Doctor ID"
+          name="doctor_id"
+          value={form.doctor_id}
+          onChange={handleChange}
+          fullWidth
+          required
+          disabled={!!doctorId}
+        />
+      )}
+
       <TextField
         label="Service Name"
         name="name"
@@ -66,6 +98,25 @@ const ServiceForm = ({ onClose }) => {
         fullWidth
         required
       />
+
+      {serviceType === "general" && (
+        <FormControl fullWidth>
+          <InputLabel>Category</InputLabel>
+          <Select
+            name="category"
+            value={form.category}
+            onChange={handleChange}
+            label="Category"
+          >
+            <MenuItem value="">None</MenuItem>
+            <MenuItem value="Consultation">Consultation</MenuItem>
+            <MenuItem value="Laboratory">Laboratory</MenuItem>
+            <MenuItem value="Radiology">Radiology</MenuItem>
+            <MenuItem value="Cardiology">Cardiology</MenuItem>
+            <MenuItem value="Other">Other</MenuItem>
+          </Select>
+        </FormControl>
+      )}
 
       <Stack direction="row" justifyContent="flex-end" spacing={2} mt={2}>
         <Button

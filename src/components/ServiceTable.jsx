@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useService } from "../context/ServiceContext";
 import { useSearch } from "../context/SearchContext";
 import {
@@ -13,22 +13,47 @@ import {
   TextField,
   Typography,
   Box,
+  Tabs,
+  Tab,
 } from "@mui/material";
+import { useDoctor } from "../context/DoctorContext";
 
 const ServiceTable = () => {
-  const { services, deleteService, updateService } = useService();
+  const {
+    generalServices,
+    doctorServices,
+    deleteGeneralService,
+    updateGeneralService,
+    deleteDoctorService,
+    updateDoctorService
+  } = useService();
   const { searchQuery } = useSearch();
+  const { doctor, getAllDoctor } = useDoctor();
 
+  const [tabValue, setTabValue] = useState(0);
   const [editId, setEditId] = useState(null);
-  const [editData, setEditData] = useState({ name: "", cost: "" });
+  const [editData, setEditData] = useState({ name: "", cost: "", category: "" });
 
-  const filterService = services.filter((s) =>
-    s.name?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  useEffect(() => {
+    getAllDoctor();
+  }, []);
+
+  const handleTabChange = (event, newValue) => {
+    setTabValue(newValue);
+  };
+
+  const filterServices = (services) =>
+    services.filter((s) =>
+      s.name?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
   const handleEdit = (serv) => {
     setEditId(serv.id);
-    setEditData({ name: serv.name, cost: serv.cost });
+    setEditData({
+      name: serv.name,
+      cost: serv.cost,
+      category: serv.category || ""
+    });
   };
 
   const handleSave = async (id) => {
@@ -37,36 +62,45 @@ const ServiceTable = () => {
       return;
     }
 
-    await updateService(id, editData);
+    if (tabValue === 0) {
+      await updateGeneralService(id, editData);
+    } else {
+      await updateDoctorService(id, { name: editData.name, cost: editData.cost });
+    }
     setEditId(null);
   };
 
   const handleCancel = () => {
     setEditId(null);
-    setEditData({ name: "", cost: "" });
+    setEditData({ name: "", cost: "", category: "" });
   };
 
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this service?")) {
-      deleteService(id);
+      if (tabValue === 0) {
+        deleteGeneralService(id);
+      } else {
+        deleteDoctorService(id);
+      }
     }
   };
 
-  const columns = ["Name", "Cost (₹)", "Action"];
+  const getDoctorName = (doctorId) => {
+    const found = doctor?.find((d) => d.id === doctorId);
+    return found ? found.name : "Unknown Doctor";
+  };
 
-  if (!services || services.length === 0) {
-    return <Typography>No services found...</Typography>;
-  }
+  const renderTable = (services, columns) => {
+    const filtered = filterServices(services);
 
-  return (
-    <Box sx={{ mt: 4 }}>
-      <Typography variant="h5" gutterBottom>
-        Service List
-      </Typography>
+    if (!services || services.length === 0) {
+      return <Typography>No services found...</Typography>;
+    }
 
+    return (
       <TableContainer
         component={Paper}
-        sx={{ width: "70dvw", mx: "auto", mt: 2, p: 2 }}
+        sx={{ width: "80dvw", mx: "auto", mt: 2, p: 2 }}
       >
         <Table>
           <TableHead>
@@ -78,12 +112,10 @@ const ServiceTable = () => {
               ))}
             </TableRow>
           </TableHead>
-
           <TableBody>
-            {filterService.length > 0 ? (
-              filterService.map((ser) => (
+            {filtered.length > 0 ? (
+              filtered.map((ser) => (
                 <TableRow key={ser.id}>
-                  {/* Editable Name */}
                   <TableCell>
                     {editId === ser.id ? (
                       <TextField
@@ -97,8 +129,6 @@ const ServiceTable = () => {
                       ser.name
                     )}
                   </TableCell>
-
-                  {/* Editable Cost */}
                   <TableCell>
                     {editId === ser.id ? (
                       <TextField
@@ -113,8 +143,24 @@ const ServiceTable = () => {
                       `₹${ser.cost}`
                     )}
                   </TableCell>
-
-                  {/* Action Buttons */}
+                  {tabValue === 0 && (
+                    <TableCell>
+                      {editId === ser.id ? (
+                        <TextField
+                          size="small"
+                          value={editData.category}
+                          onChange={(e) =>
+                            setEditData({ ...editData, category: e.target.value })
+                          }
+                        />
+                      ) : (
+                        ser.category || "N/A"
+                      )}
+                    </TableCell>
+                  )}
+                  {tabValue === 1 && (
+                    <TableCell>{getDoctorName(ser.doctor_id)}</TableCell>
+                  )}
                   <TableCell align="center">
                     {editId === ser.id ? (
                       <>
@@ -162,7 +208,7 @@ const ServiceTable = () => {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={3}
+                  colSpan={columns.length}
                   align="center"
                   sx={{ color: "text.secondary" }}
                 >
@@ -173,6 +219,22 @@ const ServiceTable = () => {
           </TableBody>
         </Table>
       </TableContainer>
+    );
+  };
+
+  return (
+    <Box sx={{ mt: 4 }}>
+      <Typography variant="h5" gutterBottom>
+        Service Management
+      </Typography>
+
+      <Tabs value={tabValue} onChange={handleTabChange} sx={{ mb: 2 }}>
+        <Tab label="General Services" />
+        <Tab label="Doctor Services" />
+      </Tabs>
+
+      {tabValue === 0 && renderTable(generalServices, ["Name", "Cost (₹)", "Category", "Action"])}
+      {tabValue === 1 && renderTable(doctorServices, ["Name", "Cost (₹)", "Doctor", "Action"])}
     </Box>
   );
 };

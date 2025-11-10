@@ -30,22 +30,19 @@ export const BillProvider = ({children}) => {
 
     }
 
-    const generateBill = async (payload) => {
-        setLoading(true);
-        try {
-            const {data} = await api.post(ENDPOINTS.BILLS.CREATE, payload);
-            toast.success("Bill generated")
-            console.log("🚀 ~ generateBill ~ data:", data)
-            return data;
-
-        } catch (error) {
-            console.log("🚀 ~ generateBill ~ error:", error)
-            toast.error("Failed to generate bill")
-            
-        } finally {
-            setLoading(false);
-        }
+    const generateBill = async (appointment_id) => {
+    setLoading(true);
+    try {
+      const { data } = await api.post(ENDPOINTS.BILLS.CREATE, { appointment_id });
+      toast.success("Bill generated successfully");
+      return data;
+    } catch (error) {
+      console.error("generateBill error:", error);
+      toast.error("Failed to generate bill");
+    } finally {
+      setLoading(false);
     }
+  };
 
     const markAsPaid = async (id,payload) => {
         setLoading(true);

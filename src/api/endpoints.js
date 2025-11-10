@@ -41,12 +41,20 @@ export const ENDPOINTS = {
         BY_ID: (id) => `/doctor/${id}`,
     },
 
-    SERVICE : {
-        ALL: "/service",
-        CREATE: "/service",
-        BY_ID: (id) => `/service/${id}`,
-        UPDATE_BY_ID:(id) =>`/service/${id}`,
-        DELETE:(id) =>`/service/${id}`
+    GENERAL_SERVICES: {
+        ALL: "/general",
+        CREATE: "/general",
+        BY_ID: (id) => `/general/${id}`,
+        UPDATE_BY_ID: (id) => `/general/${id}`,
+        DELETE: (id) => `/general/${id}`
+    },
 
+    DOCTOR_SERVICES: {
+        ALL: (doctorId) => `/doctor/${doctorId}`,
+        CREATE: "/doctor",
+        BY_ID: (id) => `/doctor/${id}`,
+        UPDATE_BY_ID: (id) => `/doctor/${id}`,
+        DELETE: (id) => `/doctor/${id}`,
+        AVAILABLE: (doctorId) => `/available/${doctorId}`
     }
 }

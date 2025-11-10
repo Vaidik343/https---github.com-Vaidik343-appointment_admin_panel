@@ -180,7 +180,9 @@ const BillList = () => {
                                 <TableBody>
                                   {bill.items.map((item) => (
                                     <TableRow key={item.id}>
-                                      <TableCell>{item.service?.name}</TableCell>
+                                      <TableCell>
+                                        {item.general_service?.name || item.doctor_service?.name || item.service?.name || 'Unknown Service'}
+                                      </TableCell>
                                       <TableCell>{item.quantity}</TableCell>
                                       <TableCell>{item.unit_price}</TableCell>
                                       <TableCell>

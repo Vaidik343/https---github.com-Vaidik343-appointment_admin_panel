@@ -7,7 +7,7 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Button,
+  Button, 
   Typography,
 } from "@mui/material";
 import { useAppointment } from "../context/AppointmentContext";

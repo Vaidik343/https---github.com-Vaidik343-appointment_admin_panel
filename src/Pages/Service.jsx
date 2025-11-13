@@ -13,11 +13,11 @@ const Service = () => {
   const [serviceType, setServiceType] = useState("general");
   const [selectedDoctor, setSelectedDoctor] = useState("");
 
-  useEffect(() => {
-    getAllGeneralServices();
-    getAllDoctor();
-  }, []);
-
+  // useEffect(() => {
+  //   getAllGeneralServices();
+  //   getAllDoctor();
+  // }, []);
+ 
   const handleAddGeneralService = () => {
     setServiceType("general");
     setSelectedDoctor("");

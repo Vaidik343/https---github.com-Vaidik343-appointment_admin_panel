@@ -12,6 +12,7 @@ import { ServiceProvider } from './context/ServiceContext.jsx'
 import { AppointmentServiceProvider } from './context/AppointmentServiceContext.jsx'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { SearchProvider } from './context/SearchContext.jsx'
+import { BackupProvider } from './context/BackupContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -23,8 +24,10 @@ createRoot(document.getElementById('root')).render(
             <DoctorProvider>
               <ServiceProvider>
                 <AppointmentServiceProvider>
-                  <App />
-                  <Toaster />
+                  <BackupProvider>
+                    <App />
+                    <Toaster />
+                  </BackupProvider>
                 </AppointmentServiceProvider>
               </ServiceProvider>
             </DoctorProvider>

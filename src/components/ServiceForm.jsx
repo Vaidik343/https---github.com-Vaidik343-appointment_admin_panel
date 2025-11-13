@@ -11,7 +11,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
-} from "@mui/material";
+} from "@mui/material"; 
 
 const ServiceForm = ({ onClose, serviceType = "general", doctorId = null }) => {
   const {

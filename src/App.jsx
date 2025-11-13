@@ -6,6 +6,7 @@ import Patients from "./pages/Patient";
 import Doctor from "./pages/Doctor";
 import Service from "./pages/Service";
 import Analytics from "./Pages/Analytics";
+import Backup from "./Pages/Backup";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="doctors" element={<Doctor />} />
         <Route path="services" element={<Service />} />
         <Route path="analytics" element={<Analytics />} />
+        <Route path="backup" element={<Backup />} />
       </Route>
     </Routes>
   );

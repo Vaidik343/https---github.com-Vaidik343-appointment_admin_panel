@@ -24,6 +24,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import { useSearch } from "../context/SearchContext";
 import AssessmentIcon from '@mui/icons-material/Assessment';
+import BackupIcon from '@mui/icons-material/Backup';
 
 const drawerWidth = 240;
 
@@ -87,6 +88,7 @@ export default function ResponsiveDrawer(props) {
     { text: "Services", icon: <MedicalServicesIcon />, path: "/services" },
     // { text: "Doctors", icon: <AssignmentIndIcon />, path: "/doctors" },
     { text: "Analytics", icon: <AssessmentIcon />, path: "/analytics" },
+    { text: "Backup", icon: <BackupIcon />, path: "/backup" },
   ];
 
   const drawer = (

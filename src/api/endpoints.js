@@ -51,10 +51,15 @@ export const ENDPOINTS = {
 
     DOCTOR_SERVICES: {
         ALL: (doctorId) => `/doctor/${doctorId}`,
-        CREATE: "/doctor",
+        CREATE: "/doctor-services",
         BY_ID: (id) => `/doctor/${id}`,
         UPDATE_BY_ID: (id) => `/doctor/${id}`,
         DELETE: (id) => `/doctor/${id}`,
         AVAILABLE: (doctorId) => `/available/${doctorId}`
+    },
+
+    BACKUP: {
+        FULL: "/backup/full",
+        TABLE: (tableName) => `/backup/${tableName}`,
     }
 }

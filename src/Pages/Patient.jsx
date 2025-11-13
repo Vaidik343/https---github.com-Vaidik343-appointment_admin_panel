@@ -11,9 +11,7 @@ const Patient = () => {
           const [showModal, setShowModal] = useState(false);
 
            
-    useEffect( ()=> {
-        getAllPatients();
-    },[])
+
  
    if (loading)
       return (

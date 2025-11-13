@@ -11,6 +11,10 @@ export const ServiceProvider = ({ children }) => {
   const [doctorServices, setDoctorServices] = useState([]);
   const [availableServices, setAvailableServices] = useState([]);
 
+  // useEffect(() => {
+  //   getAllGeneralServices();
+  // }, []);
+
   // ✅ Get all general services
   const getAllGeneralServices = async () => {
     setLoading(true);

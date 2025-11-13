@@ -195,7 +195,7 @@ const BillList = () => {
                                   ))}
                                 </TableBody>
                               </Table>
-
+ 
                               <Typography variant="body2">
                                 <strong>Tax:</strong> ₹{bill.tax} |{" "}
                                 <strong>Discount:</strong> ₹{bill.discount}

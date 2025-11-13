@@ -12,6 +12,9 @@ export const BillProvider = ({children}) => {
     const [loading, setLoading] = useState(false)
     const [selectedBill, setSelectedBill] = useState(null);
 
+//   useEffect(() => {
+//     getAllBills();
+//   }, []);
 
     const getAllBills = async () => {
         setLoading(true)

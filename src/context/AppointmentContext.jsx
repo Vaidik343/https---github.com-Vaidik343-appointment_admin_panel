@@ -9,6 +9,10 @@ export const AppointmentProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [appointments, setAppointment] = useState([]);
 
+  // useEffect(() => {
+  //   getAllAppointment();
+  // }, []);
+ 
   const getAllAppointment = async () => {
     setLoading(true);
     try {
@@ -24,7 +28,7 @@ export const AppointmentProvider = ({ children }) => {
       setLoading(false);
     }
   };
-
+ 
   const createAppointment = async (payload) => {
     setLoading(true);
     try {

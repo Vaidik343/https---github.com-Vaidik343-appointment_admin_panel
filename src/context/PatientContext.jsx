@@ -10,7 +10,10 @@ export const PatientProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
     const [patient, setPatient] = useState([]);
 
- 
+  // useEffect(() => {
+  //   getAllPatients();
+  // }, []);
+
  const getAllPatients = async () => {
     setLoading(true);
     try {

@@ -9,6 +9,10 @@ export const DoctorProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [doctor, setDoctor] = useState([]);
 
+  // useEffect(() => {
+  //   getAllDoctor();
+  // }, []);
+
   const getAllDoctor = async () => {
     setLoading(true);
     try {
